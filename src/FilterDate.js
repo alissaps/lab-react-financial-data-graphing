@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function FilterDate() {
+function FilterDate(props) {
 
   const [formData, setFormData] = useState({
     from: "",
@@ -14,7 +14,7 @@ function FilterDate() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(event)
+    props.setData(formData);
   };
 
   return (
@@ -23,24 +23,24 @@ function FilterDate() {
         <label>
           From:{" "}
           <input
+            name="from"
             onChange={handleChange}
             id="inicial"
             className="form-control me-3"
             type="date"
             placeholder="Data Inicial"
-            value={formData.inicial}
           />
         </label>
 
         <label>
           To:{" "}
           <input
+            name="to"
             onChange={handleChange}
             id="final"
             className="form-control"
             type="date"
             placeholder="Data Final"
-            value={formData.final}
           />
         </label>
 

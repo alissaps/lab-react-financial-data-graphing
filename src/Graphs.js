@@ -7,20 +7,28 @@ function Graphs() {
   const [bitcoinData, setBitcoinData] = useState({});
   const [loading, setLoading] = useState(true);
   const [chart, setChart] = useState(null);
+  const [data, setData] = useState(null);
+  const [link, setLink] = useState("http://api.coindesk.com/v1/bpi/historical/close.json");
+
+  useEffect(() => {
+    if(data !== null) {
+      setLink(`https://api.coindesk.com/v1/bpi/historical/close.json?start=${data.from}&end=${data.to}`)
+    }
+  },[data]);
 
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://api.coindesk.com/v1/bpi/historical/close.json")
+      .get(link)
       .then((response) => {
         setBitcoinData({ ...response.data.bpi });
         setLoading(false);
       })
       .catch((err) => {
         setLoading(false);
-        console.log(err)
+        console.log(err);
       });
-  }, []);
+  }, [link]);
 
   useEffect(() => {
     if (!loading) {
@@ -53,7 +61,7 @@ function Graphs() {
 
   return (
     <div>
-        <FilterDate/>
+      <FilterDate setData={setData} />
       <div>{loading ? "Carregando..." : <canvas id="myCanvas" />}</div>
     </div>
   );
